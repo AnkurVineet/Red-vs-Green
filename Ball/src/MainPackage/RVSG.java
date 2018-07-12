@@ -9,12 +9,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
-import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 /**
  *
@@ -23,10 +23,14 @@ import javax.swing.JFrame;
 public class RVSG extends JFrame implements KeyListener
 {
     Ball b1;
+    Timer timer;
+    int STEP_SIZE = 3;
+    boolean leftP1=false,rightP1=false,upP1=false,downP1=false;
         RVSG() 
 	{
-            b1 = new Ball(50, 'R', 50, 50);
+            b1 = new Ball(60, 'R', 50, 50);
             addKeyListener(this);
+            refreshScreen();
 	}
         @Override
 	public void paint(Graphics g)
@@ -46,7 +50,7 @@ public class RVSG extends JFrame implements KeyListener
                 gamepage.setExtendedState(MAXIMIZED_BOTH);
 		gamepage.setVisible(true);
 		gamepage.setDefaultCloseOperation(EXIT_ON_CLOSE);
-                new Runnable() {
+            /*    new Runnable() {
                     @Override
                     public void run() {
                         try {
@@ -55,41 +59,81 @@ public class RVSG extends JFrame implements KeyListener
                             Logger.getLogger(RVSG.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
-                };
+                };*/
+                
+            
 	}
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
+   public void refreshScreen() {
+    timer = new Timer(0, (ActionEvent e) -> {
+        if(leftP1)
+            b1.xpos -= STEP_SIZE;
+        if(upP1)
+            b1.ypos -= STEP_SIZE;
+        if(downP1) 
+            b1.ypos += STEP_SIZE;
+        if(rightP1)
+            b1.xpos += STEP_SIZE;
+        System.out.println("\t"+upP1);
+        System.out.println(leftP1+":"+downP1+":"+rightP1);
+        repaint();
+    });
+    timer.setRepeats(true);
+    // Aprox. 60 FPS
+    timer.setDelay(17);
+    timer.start();
+  }
     @Override
     public void keyPressed(KeyEvent e) 
     {
+        
         if(e.getKeyCode() == KeyEvent.VK_W)
         {
             //System.out.println("W pressed");
-            b1.ypos -= 5;
+            upP1 = true;
         }
         if(e.getKeyCode() == KeyEvent.VK_A)
         {
             //System.out.println("A pressed");
-            b1.xpos -= 5;
+            leftP1 = true;
         }
         if(e.getKeyCode() == KeyEvent.VK_S)
         {
             //System.out.println("S pressed");
-            b1.ypos += 5;
+            downP1 = true;
         }
         if(e.getKeyCode() == KeyEvent.VK_D)
         {
             //System.out.println("D pressed");
-            b1.xpos += 5;
+            rightP1 = true;
         }
-        repaint();
+    }
+
+     @Override
+    public void keyTyped(KeyEvent e) 
+    {
+      // repaint();
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(KeyEvent e) 
+    {
+         if(e.getKeyCode() == KeyEvent.VK_W)
+        {
+            upP1 = false;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_A)
+        {
+            leftP1 = false;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_S)
+        {
+            downP1 = false;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_D)
+        {
+            rightP1 = false;
+        }
     }
 
 }
