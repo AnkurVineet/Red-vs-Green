@@ -8,10 +8,17 @@ package MainPackage;
  *
  * @author AnkurVineet
  */
-public class Ball 
+public class Ball
 {
-    Ball()
+    int radius;
+    char colour;
+    int xpos,ypos;
+    Ball(int rad,char col,int x,int y)
     {
-        System.out.println("Direct Push to Github.com");
+        radius = rad;
+        colour = col;
+        xpos = x;
+        ypos = y;
+        //System.out.println("Direct Push to Github.com");
     }
 }
