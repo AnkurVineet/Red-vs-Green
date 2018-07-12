@@ -22,13 +22,15 @@ import javax.swing.Timer;
  */
 public class RVSG extends JFrame implements KeyListener
 {
-    Ball b1;
+    Ball b1,b2;
     Timer timer;
     int STEP_SIZE = 3;
+    int BALL_RADIUS = 60;
     boolean leftP1=false,rightP1=false,upP1=false,downP1=false;
         RVSG() 
 	{
-            b1 = new Ball(60, 'R', 50, 50);
+            b1 = new Ball(BALL_RADIUS, 'R', 50, 50);
+            b2 = new Ball(BALL_RADIUS,'G', 500, 50);
             addKeyListener(this);
             refreshScreen();
 	}
@@ -38,6 +40,8 @@ public class RVSG extends JFrame implements KeyListener
                 super.paint(g);
                 g.setColor(Color.red);
 		g.fillOval(b1.xpos, b1.ypos, b1.radius, b1.radius);
+                g.setColor(Color.green);
+                g.fillOval(b2.xpos,b2.ypos , b2.radius, b2.radius);
 	}
 	public static void main(String[] args)
 	{
